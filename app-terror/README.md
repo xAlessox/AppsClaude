@@ -1,6 +1,6 @@
 # 💀 Noche de Terror
 
-App web con **15 sonidos de terror** para Halloween: gritos, demonios,
+App web con **16 sonidos de terror** para Halloween: gritos, demonios,
 susurros, puertas que rechinan y más.
 
 ## Cómo usarla
@@ -16,13 +16,15 @@ pantalla de inicio").
 
 Cada sonido **se repite sin parar hasta que lo vuelvas a tocar**, y puedes
 tener varios sonando a la vez (por ejemplo latido + susurros + grito).
+Debajo de cada botón hay una **barrita para el volumen de ese sonido**
+(el celular la recuerda), además del volumen general.
 
 **10 sustos**:
 grito desgarrador, demonio, risa de bruja, zombi, aullido de lobo,
 puerta que rechina, golpes en la puerta, cadenas, violines asesinos y campanadas.
 
-**5 ambientes** de fondo:
-susurros, latido de pánico (se acelera), respiración en la nuca,
+**6 ambientes** de fondo:
+susurros, lengua de serpiente (habla siseando), latido de pánico (se acelera), respiración en la nuca,
 caja de música maldita y casa embrujada.
 
 **💀 Susto sorpresa**: eliges cuánto esperar (10 s, 30 s, 1 min o al azar),

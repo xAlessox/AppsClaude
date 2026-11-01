@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a0505">
-<meta name="description" content="15 sonidos de terror para Halloween: gritos, demonios, susurros y más. Los sonidos funcionan sin internet.">
+<meta name="description" content="16 sonidos de terror para Halloween: gritos, demonios, susurros y más. Los sonidos funcionan sin internet.">
 <title>Noche de Terror · Sonidos para Halloween</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -55,6 +55,9 @@
   }
   .tile:active{transform:scale(.95)}
   .tile .ico{font-size:26px;line-height:1}
+  .cell{display:flex;flex-direction:column;gap:4px;min-width:0}
+  .cell .tile{flex:1}
+  .cell input[type=range]{flex:none;width:100%;height:24px;margin:0}
   .tile .hint{visibility:hidden;font-size:10.5px;font-weight:700;color:var(--pumpkin);letter-spacing:.2px}
   .tile[aria-pressed="true"] .hint{visibility:visible}
   .tile[aria-pressed="true"]{background:var(--card-on);border-color:var(--blood);box-shadow:0 0 0 1px var(--blood) inset,0 0 18px rgba(227,32,43,.35)}
@@ -116,10 +119,10 @@
 <div class="wrap">
   <header>
     <h1>Noche de Terror</h1>
-    <p>🎃 15 sonidos para asustar en Halloween. Toca uno y suena sin parar; tócalo otra vez para callarlo. Puedes mezclar varios.</p>
+    <p>🎃 16 sonidos para asustar en Halloween. Toca uno y suena sin parar; tócalo otra vez para callarlo. Puedes mezclar varios.</p>
   </header>
 
-  <h2>Sustos <small>· se repiten hasta que los vuelvas a tocar</small></h2>
+  <h2>Sustos <small>· la barrita debajo es el volumen de cada uno</small></h2>
   <div class="grid" id="shotGrid"></div>
 
   <h2>Ambientes <small>· para mezclar de fondo</small></h2>
@@ -127,7 +130,7 @@
 
   <div class="panel">
     <div class="row">
-      <label for="vol">Volumen</label>
+      <label for="vol">Volumen general</label>
       <input id="vol" type="range" min="0" max="100" value="85" aria-label="Volumen">
       <span id="volTxt" style="width:42px;text-align:right;color:var(--dim);font-size:13px">85%</span>
     </div>
@@ -160,10 +163,10 @@
   </div>
 
   <footer>
-    🎧 Con audífonos, los susurros y la respiración se mueven alrededor de tu cabeza.<br>
+    🎧 Con audífonos, los susurros, la serpiente y la respiración se mueven alrededor de tu cabeza.<br>
     Úsalo con responsabilidad: no asustes a personas con problemas del corazón, bebés ni mascotas.<br>
     Los sonidos se generan en el momento: no se descarga ni se envía nada.<br>
-    <span style="opacity:.6">Versión 4 · cada sonido se repite hasta que lo vuelvas a tocar</span>
+    <span style="opacity:.6">Versión 5 · volumen para cada sonido y lengua de serpiente</span>
   </footer>
 </div>
 
@@ -732,6 +735,62 @@ function susurros(G, out, lv){
   }};
 }
 
+// Lengua de serpiente: una sola voz que habla siseando. Siseos largos ("sss",
+// "shh") que suben de tono, golpecitos de lengua y vocales cortas con una voz
+// rasposa muy grave por debajo, para que suene a criatura y no a persona.
+function parsel(G, out, lv){
+  const t0 = ctx.currentTime;
+  const n = noise(G, "white", t0);
+  const pn = panner(0); wire(pn, gain(lv), out);
+  const vg = gain(0), sum = gain(1);
+  const fs = [0, 1, 2].map(i => filt("bandpass", VOWELS[0][i], [7, 9, 10][i]));
+  fs.forEach((f, i) => wire(vg, f, gain([1, 0.8, 0.5][i]), sum));
+  wire(n, vg); wire(sum, pn);
+  const sib = filt("bandpass", 5000, 2.5), sg = gain(0);              // el siseo
+  wire(n, sib, sg, pn);
+  const fry = osc(G, "sawtooth", 62, t0);                              // voz rasposa grave
+  wire(wobble(G, 10, t0), gain(250), fry.detune);
+  const am = gain(0.5); wire(wobble(G, 22, t0), gain(0.5), am.gain);
+  const fg = gain(0); wire(fry, am, fg); fs.forEach(f => fg.connect(f));
+  function hiss(t, len, f1, a){
+    sib.frequency.setValueAtTime(f1, t); sib.frequency.exponentialRampToValueAtTime(f1 * rnd(1.1, 1.35), t + len);
+    sg.gain.setValueAtTime(0, t); sg.gain.linearRampToValueAtTime(a, t + len * 0.3); sg.gain.linearRampToValueAtTime(0, t + len);
+  }
+  function vowel(t, d, fry){
+    const V = pick(VOWELS);
+    fs.forEach((f, k) => f.frequency.setTargetAtTime(V[k] * rnd(0.85, 1.05), t, 0.015));
+    vg.gain.setValueAtTime(0, t); vg.gain.linearRampToValueAtTime(0.9, t + 0.02);
+    vg.gain.linearRampToValueAtTime(0.6, t + d * 0.7); vg.gain.linearRampToValueAtTime(0, t + d);
+    fg.gain.setValueAtTime(0, t); fg.gain.linearRampToValueAtTime(fry, t + 0.03); fg.gain.linearRampToValueAtTime(0, t + d);
+  }
+  function syl(t){
+    const r = Math.random();
+    if (r < 0.55){ const len = rnd(0.14, 0.38); hiss(t, len, Math.random() < 0.65 ? rnd(4200, 5200) : rnd(2400, 3000), rnd(0.6, 0.9)); t += len * 0.85; }
+    else if (r < 0.8){                                                 // "t" / "k": golpe de lengua
+      sib.frequency.setValueAtTime(3500, t);
+      sg.gain.setValueAtTime(0, t); sg.gain.linearRampToValueAtTime(0.9, t + 0.004); sg.gain.linearRampToValueAtTime(0, t + 0.03);
+      t += 0.04;
+    }
+    const d = rnd(0.07, 0.16); vowel(t, d, rnd(0.15, 0.35)); t += d;
+    if (Math.random() < 0.45){ const len = rnd(0.1, 0.3); hiss(t, len, rnd(4500, 5800), rnd(0.5, 0.8)); t += len; }
+    return t + 0.01;
+  }
+  function word(t){
+    if (pn.pan) pn.pan.linearRampToValueAtTime(rnd(-0.5, 0.5), t);
+    if (Math.random() < 0.15){                                         // "hhhaaasssss" largo y amenazante
+      vowel(t, 0.6, 0.45); hiss(t + 0.5, rnd(0.8, 1.3), rnd(3800, 4600), 0.9);
+      return t + 1.9;
+    }
+    const k = 2 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < k; i++) t = syl(t);
+    return t;
+  }
+  let next = t0 + 0.5;
+  return { tick(until){
+    while (next < until) next = word(next) + rnd(0.5, Math.random() < 0.3 ? 2.2 : 1.0);
+  }};
+}
+
 function latido(G, out, lv){
   const t0 = ctx.currentTime; let next = t0 + 0.4;
   wire(noise(G, "brown", t0), filt("lowpass", 260), gain(0.3 * lv), out);         // sangre en los oídos
@@ -847,7 +906,7 @@ function casa(G, out, lv){
 }
 
 /* ==================================================================
-   5) Catálogo (10 sustos + 5 ambientes = 15). "level" iguala volúmenes,
+   5) Catálogo (10 sustos + 6 ambientes = 16). "level" iguala volúmenes,
    "wet" es cuánta reverb lleva cada uno.
 ===================================================================*/
 const SHOTS = {
@@ -864,6 +923,7 @@ const SHOTS = {
 };
 const AMBIENTS = {
   susurros:    { name:"Susurros",              ico:"🗣️", build:susurros,    level:2.2, wet:0.3 },
+  parsel:      { name:"Lengua de serpiente",   ico:"🐍", build:parsel,      level:3, wet:0.25 },
   latido:      { name:"Latido de pánico",      ico:"💓", build:latido,      level:1, wet:0.1 },
   respiracion: { name:"Respiración en la nuca",ico:"😮‍💨", build:respiracion, level:3, wet:0.12 },
   caja:        { name:"Caja de música maldita",ico:"🎠", build:cajaMaldita, level:2, wet:0.55 },
@@ -875,11 +935,17 @@ const AMBIENTS = {
 ===================================================================*/
 const state = { playing:{}, trap:null, trapSecs:30 };
 
-function newGroup(wet){
-  const input = gain(1), vol = gain(1), send = gain(wet);
-  wire(input, vol, dryBus); wire(vol, send, reverbIn);
-  return { input, vol, nodes:[], timers:[] };
+function newGroup(wet, trimV){
+  const input = gain(1), trim = gain(trimV === undefined ? 1 : trimV), vol = gain(1), send = gain(wet);
+  wire(input, trim, vol, dryBus); wire(vol, send, reverbIn);
+  return { input, trim, vol, nodes:[], timers:[] };
 }
+// Volumen de cada sonido (0-100). Se guarda en el celular. 80 = volumen normal.
+function soundVol(id){
+  const v = parseInt(store.get("nt_v_" + id, "80"), 10);
+  return isNaN(v) ? 80 : Math.max(0, Math.min(100, v));
+}
+function trimOf(id){ const v = soundVol(id) / 100; return v * v * 1.5; }
 function killGroup(G, fade){
   if (!G || G.dead) return;
   G.dead = true; fade = fade || 0.1;
@@ -919,7 +985,7 @@ function toggle(id){
     return;
   }
   const S = isShot ? SHOTS[id] : AMBIENTS[id];
-  const G = newGroup(S.wet), t = ctx.currentTime;
+  const G = newGroup(S.wet, trimOf(id)), t = ctx.currentTime;
   if (!isShot){ G.vol.gain.setValueAtTime(0, t); G.vol.gain.linearRampToValueAtTime(1, t + 1.5); }
   const h = isShot ? repeater(S)(G, G.input, S.level) : S.build(G, G.input, S.level);
   const run = () => { h.tick(ctx.currentTime + 1.2); prune(G); };
@@ -1004,12 +1070,22 @@ volEl.addEventListener("input", () => {
    8) Interfaz
 ===================================================================*/
 function tile(id, item, cls, onClick){
+  const cell = document.createElement("div"); cell.className = "cell";
   const b = document.createElement("button");
   b.className = "tile " + cls; b.type = "button"; b.dataset.id = id;
   b.setAttribute("aria-pressed", "false");
   b.innerHTML = '<span class="ico">' + item.ico + "</span><span>" + item.name + '</span><span class="hint">■ toca para parar</span>';
   b.addEventListener("click", () => onClick(id));
-  return b;
+  const r = document.createElement("input");                        // volumen propio
+  r.type = "range"; r.min = 0; r.max = 100; r.value = soundVol(id); r.id = "v_" + id;
+  r.setAttribute("aria-label", "Volumen de " + item.name);
+  r.addEventListener("input", () => {
+    store.set("nt_v_" + id, r.value);
+    const e = state.playing[id];
+    if (e && ctx) e.G.trim.gain.setTargetAtTime(trimOf(id), ctx.currentTime, 0.04);
+  });
+  cell.appendChild(b); cell.appendChild(r);
+  return cell;
 }
 const shotGrid = document.getElementById("shotGrid");
 const ambGrid = document.getElementById("ambGrid");

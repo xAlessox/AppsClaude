@@ -6,7 +6,7 @@ todos los sonidos se generan en el navegador con la Web Audio API.
 | App | Qué hace | Link |
 |---|---|---|
 | 🌙 Duerme Bebé | Ruido blanco y canciones de cuna | https://xalessox.github.io/AppsClaude/app-bebe/ |
-| 💀 Noche de Terror | 15 sonidos de terror para Halloween | https://xalessox.github.io/AppsClaude/app-terror/ |
+| 💀 Noche de Terror | 16 sonidos de terror para Halloween | https://xalessox.github.io/AppsClaude/app-terror/ |
 
 Portada con las dos: https://xalessox.github.io/AppsClaude/
 
