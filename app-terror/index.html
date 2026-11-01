@@ -114,13 +114,13 @@
 <div class="wrap">
   <header>
     <h1>Noche de Terror</h1>
-    <p>🎃 15 sonidos para asustar en Halloween. Súbele el volumen… si te atreves.</p>
+    <p>🎃 15 sonidos para asustar en Halloween. Toca uno y suena sin parar; tócalo otra vez para callarlo. Puedes mezclar varios.</p>
   </header>
 
-  <h2>Sustos <small>· toca y suena una vez</small></h2>
+  <h2>Sustos <small>· se repiten hasta que los vuelvas a tocar</small></h2>
   <div class="grid" id="shotGrid"></div>
 
-  <h2>Ambientes <small>· suenan sin parar</small></h2>
+  <h2>Ambientes <small>· para mezclar de fondo</small></h2>
   <div class="grid" id="ambGrid"></div>
 
   <div class="panel">
@@ -851,9 +851,9 @@ const AMBIENTS = {
 };
 
 /* ==================================================================
-   6) Estado: varios sustos a la vez + un ambiente
+   6) Estado: cada sonido se enciende y apaga con un toque
 ===================================================================*/
-const state = { shots:{}, ambient:null, amb:null, trap:null, trapSecs:30 };
+const state = { playing:{}, trap:null, trapSecs:30 };
 
 function newGroup(wet){
   const input = gain(1), vol = gain(1), send = gain(wet);
@@ -877,44 +877,40 @@ function killGroup(G, fade){
 // Olvida los nodos que ya terminaron (para que un ambiente de horas no acumule memoria).
 function prune(G){ const t = ctx.currentTime - 1; G.nodes = G.nodes.filter(n => !n._end || n._end > t); }
 
-function playShot(id){
-  audio(); checkAudioReady();
-  const S = SHOTS[id];
-  if (state.shots[id]) killGroup(state.shots[id].G, 0.05);   // si ya sonaba, vuelve a empezar
-  const G = newGroup(S.wet);
-  const dur = S.build(G, G.input, ctx.currentTime + 0.03, S.level);
-  const entry = { G };
-  state.shots[id] = entry;
-  G.timers.push(setTimeout(() => {
-    if (state.shots[id] === entry){ delete state.shots[id]; render(); }
-    try{ G.vol.disconnect(); }catch(e){}
-  }, (dur + 0.2) * 1000));
-  render();
+// Repite un susto sin parar: cuando termina uno, agenda el siguiente tras una pausa corta.
+function repeater(S){
+  return (G, out, lv) => {
+    let next = ctx.currentTime + 0.03;
+    return { tick(until){
+      while (next < until) next += S.build(G, out, next, lv) + rnd(0.4, 1.2);
+    }};
+  };
 }
 
-function setAmbient(id){
+// Un toque lo enciende (y suena sin parar); otro toque lo apaga. Se pueden mezclar varios.
+function toggle(id){
   audio(); checkAudioReady();
-  const same = state.ambient === id;
-  if (state.amb) killGroup(state.amb.G, 0.6);
-  state.amb = null;
-  state.ambient = same ? null : id;
-  if (state.ambient){
-    const A = AMBIENTS[id], G = newGroup(A.wet), t = ctx.currentTime;
-    G.vol.gain.setValueAtTime(0, t); G.vol.gain.linearRampToValueAtTime(1, t + 1.5);
-    const h = A.build(G, G.input, A.level);
-    const run = () => { h.tick(ctx.currentTime + 1.2); prune(G); };
-    run();
-    G.timers.push(setInterval(run, 250));
-    state.amb = { G };
+  const isShot = !!SHOTS[id];
+  if (state.playing[id]){
+    killGroup(state.playing[id].G, isShot ? 0.15 : 0.4);
+    delete state.playing[id];
+    render();
+    return;
   }
+  const S = isShot ? SHOTS[id] : AMBIENTS[id];
+  const G = newGroup(S.wet), t = ctx.currentTime;
+  if (!isShot){ G.vol.gain.setValueAtTime(0, t); G.vol.gain.linearRampToValueAtTime(1, t + 1.5); }
+  const h = isShot ? repeater(S)(G, G.input, S.level) : S.build(G, G.input, S.level);
+  const run = () => { h.tick(ctx.currentTime + 1.2); prune(G); };
+  run();
+  G.timers.push(setInterval(run, 250));
+  state.playing[id] = { G };
   render();
 }
 
 function stopAll(){
-  Object.values(state.shots).forEach(e => killGroup(e.G, 0.1));
-  state.shots = {};
-  if (state.amb) killGroup(state.amb.G, 0.2);
-  state.amb = null; state.ambient = null;
+  Object.values(state.playing).forEach(e => killGroup(e.G, 0.15));
+  state.playing = {};
   cancelTrap();
   try{ if (silentEl) silentEl.pause(); }catch(e){}
   render();
@@ -995,8 +991,8 @@ function tile(id, item, cls, onClick){
 }
 const shotGrid = document.getElementById("shotGrid");
 const ambGrid = document.getElementById("ambGrid");
-Object.entries(SHOTS).forEach(([id, s]) => shotGrid.appendChild(tile(id, s, "shot", playShot)));
-Object.entries(AMBIENTS).forEach(([id, a]) => ambGrid.appendChild(tile(id, a, "amb", setAmbient)));
+Object.entries(SHOTS).forEach(([id, s]) => shotGrid.appendChild(tile(id, s, "shot", toggle)));
+Object.entries(AMBIENTS).forEach(([id, a]) => ambGrid.appendChild(tile(id, a, "amb", toggle)));
 
 const trapChips = document.getElementById("trapChips");
 TRAPS.forEach(s => {
@@ -1033,13 +1029,11 @@ function checkAudioReady(){
 }
 
 function render(){
-  shotGrid.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-pressed", String(!!state.shots[b.dataset.id])));
-  ambGrid.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === state.ambient)));
+  document.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-pressed", String(!!state.playing[b.dataset.id])));
   trapChips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(parseInt(c.dataset.s, 10) === state.trapSecs)));
-  const parts = Object.keys(state.shots).map(id => SHOTS[id].name);
-  if (state.ambient) parts.push(AMBIENTS[state.ambient].name);
+  const parts = Object.keys(state.playing).map(id => (SHOTS[id] || AMBIENTS[id]).name);
   statusEl.textContent = parts.length ? "▶ " + parts.join(" + ") : "Toca un sonido… si te atreves";
-  keepAwake(!!state.ambient || !!state.trap);
+  keepAwake(parts.length > 0 || !!state.trap);
 }
 
 document.getElementById("stopBtn").addEventListener("click", stopAll);
@@ -1047,7 +1041,7 @@ document.getElementById("trapBtn").addEventListener("click", armTrap);
 trapEl.addEventListener("click", () => { if (!trapEl.classList.contains("boo")) cancelTrap(); });
 trapEl.addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") cancelTrap(); });
 
-// Mantener la pantalla encendida mientras suena un ambiente o la trampa está armada
+// Mantener la pantalla encendida mientras suena algo o la trampa está armada
 let wakeLock = null;
 async function keepAwake(on){
   try{
@@ -1062,7 +1056,7 @@ async function keepAwake(on){
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible"){
     if (ctx) ctx.resume();
-    if (state.ambient || state.trap) keepAwake(true);
+    if (Object.keys(state.playing).length || state.trap) keepAwake(true);
   }
 });
 

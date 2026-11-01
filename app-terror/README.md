@@ -14,11 +14,14 @@ pantalla de inicio").
 
 ## Qué trae
 
-**10 sustos** (suenan una vez, se pueden mezclar):
+Cada sonido **se repite sin parar hasta que lo vuelvas a tocar**, y puedes
+tener varios sonando a la vez (por ejemplo latido + susurros + grito).
+
+**10 sustos**:
 grito desgarrador, demonio, risa de bruja, zombi, aullido de lobo,
 puerta que rechina, golpes en la puerta, cadenas, violines asesinos y campanadas.
 
-**5 ambientes** (suenan en bucle, uno a la vez, y se pueden mezclar con los sustos):
+**5 ambientes** de fondo:
 susurros, latido de pánico (se acelera), respiración en la nuca,
 caja de música maldita y casa embrujada.
 
