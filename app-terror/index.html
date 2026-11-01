@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0505">
+<meta name="description" content="15 sonidos de terror para Halloween: gritos, demonios, susurros y más. Los sonidos funcionan sin internet.">
+<title>Noche de Terror · Sonidos para Halloween</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0505;
+    --bg-2:#140909;
+    --card:#1b0c0c;
+    --card-on:#4d0c10;
+    --line:#361414;
+    --txt:#f4e9e6;
+    --dim:#a68f8b;
+    --blood:#e3202b;
+    --pumpkin:#ff8a2a;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(90% 60% at 50% -10%, #3a0a0d 0%, transparent 70%),
+      radial-gradient(120% 100% at 50% 110%, #1a0606 0%, var(--bg) 60%);
+    background-color:var(--bg);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:22px 16px 40px}
+  header{text-align:center;margin-bottom:18px}
+  h1{
+    font-family:"Creepster",fantasy,cursive;font-weight:400;
+    font-size:44px;line-height:1.05;margin:0 0 6px;letter-spacing:1.5px;color:var(--blood);
+    text-shadow:0 0 18px rgba(227,32,43,.45),0 3px 0 #2a0507;
+    animation:flicker 7s infinite;
+  }
+  @keyframes flicker{0%,91%,95%,100%{opacity:1}92%{opacity:.35}93%{opacity:.9}94%{opacity:.2}}
+  header p{margin:0;color:var(--dim);font-size:13.5px}
+  h2{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--dim);margin:26px 0 10px;font-weight:600}
+  h2 small{text-transform:none;letter-spacing:0;font-weight:400;color:#7d6763}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:10px}
+  .tile{
+    appearance:none;border:1px solid var(--line);background:var(--card);color:var(--txt);
+    border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    font-size:12.5px;line-height:1.25;transition:background .18s,border-color .18s,transform .12s;
+  }
+  .tile:active{transform:scale(.95)}
+  .tile .ico{font-size:26px;line-height:1}
+  .tile[aria-pressed="true"]{background:var(--card-on);border-color:var(--blood);box-shadow:0 0 0 1px var(--blood) inset,0 0 18px rgba(227,32,43,.35)}
+  .shot[aria-pressed="true"] .ico{animation:shake .14s linear infinite}
+  .amb[aria-pressed="true"] .ico{animation:pulse 2.4s ease-in-out infinite}
+  @keyframes shake{0%{transform:translate(0,0) rotate(0)}25%{transform:translate(-2px,1px) rotate(-6deg)}50%{transform:translate(2px,-1px) rotate(5deg)}75%{transform:translate(-1px,-1px) rotate(-3deg)}100%{transform:translate(0,0) rotate(0)}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.1)}}
+  .panel{background:var(--bg-2);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:26px}
+  .row{display:flex;align-items:center;gap:12px}
+  .row+.row{margin-top:16px}
+  .row label{font-size:13px;color:var(--dim);min-width:70px}
+  input[type=range]{flex:1;accent-color:var(--blood);height:26px;min-width:0}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+  .chip{
+    appearance:none;border:1px solid var(--line);background:transparent;color:var(--dim);
+    border-radius:999px;padding:7px 13px;font-size:13px;cursor:pointer;transition:.15s;
+  }
+  .chip[aria-pressed="true"]{background:var(--pumpkin);border-color:var(--pumpkin);color:#1a0a02;font-weight:600}
+  .status{margin-top:18px;text-align:center;font-size:13px;color:var(--dim);min-height:20px}
+  .meter{height:8px;border-radius:99px;background:#1a0b0b;border:1px solid var(--line);overflow:hidden;margin-top:10px}
+  #meterFill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,var(--pumpkin),var(--blood));transition:width .08s linear}
+  .warn{margin-top:12px;padding:10px 12px;border-radius:12px;background:#3a2a12;border:1px solid #7a5a22;color:#ffc98f;font-size:12.5px;text-align:center;display:none}
+  .warn.on{display:block}
+  .actions{display:flex;gap:10px;margin-top:18px}
+  .btn{
+    flex:1;appearance:none;border:1px solid var(--line);background:var(--card);color:var(--txt);
+    border-radius:14px;padding:14px;font-size:14px;cursor:pointer;font-weight:600;
+  }
+  .btn.stop{background:#2a1418;border-color:#5b2a35;color:#ffc7d0}
+  .trapBox h3{margin:0 0 6px;font-size:15px}
+  .trapBox p{margin:0 0 12px;color:var(--dim);font-size:12.5px;line-height:1.5}
+  .btn.trap{width:100%;margin-top:14px;background:linear-gradient(180deg,#8f0f17,#5a070c);border-color:var(--blood);color:#fff;font-size:15px}
+  details.help{margin-top:14px;font-size:12.5px;color:var(--dim)}
+  details.help summary{cursor:pointer;color:var(--pumpkin);list-style:none;text-align:center;padding:6px}
+  details.help summary::-webkit-details-marker{display:none}
+  details.help ul{margin:10px 0 0;padding-left:18px;line-height:1.7}
+  .status b{color:var(--pumpkin);font-variant-numeric:tabular-nums}
+  footer{margin-top:26px;text-align:center;color:#7d6763;font-size:11.5px;line-height:1.6}
+  /* Pantalla negra de la trampa + destello del susto */
+  #trap{
+    position:fixed;inset:0;background:#000;color:#1f1414;display:none;
+    align-items:center;justify-content:center;flex-direction:column;gap:14px;
+    z-index:99;cursor:pointer;text-align:center;padding:20px;
+  }
+  #trap.on{display:flex}
+  #trapTime{font-size:30px;font-variant-numeric:tabular-nums;letter-spacing:1px}
+  #trap small{font-size:11px;color:#140d0d}
+  #trap .skull{display:none;font-size:42vmin;line-height:1}
+  #trap.boo{background:#b3000c;animation:boo .1s linear 6}
+  #trap.boo .skull{display:block;animation:shake .08s linear infinite}
+  #trap.boo #trapTime,#trap.boo small{display:none}
+  @keyframes boo{0%,100%{background:#b3000c}50%{background:#000}}
+  @media (prefers-reduced-motion: reduce){
+    h1,.shot[aria-pressed="true"] .ico,.amb[aria-pressed="true"] .ico,#trap.boo,#trap.boo .skull{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Noche de Terror</h1>
+    <p>🎃 15 sonidos para asustar en Halloween. Súbele el volumen… si te atreves.</p>
+  </header>
+
+  <h2>Sustos <small>· toca y suena una vez</small></h2>
+  <div class="grid" id="shotGrid"></div>
+
+  <h2>Ambientes <small>· suenan sin parar</small></h2>
+  <div class="grid" id="ambGrid"></div>
+
+  <div class="panel">
+    <div class="row">
+      <label for="vol">Volumen</label>
+      <input id="vol" type="range" min="0" max="100" value="85" aria-label="Volumen">
+      <span id="volTxt" style="width:42px;text-align:right;color:var(--dim);font-size:13px">85%</span>
+    </div>
+    <div class="status" id="status">Toca un sonido… si te atreves</div>
+    <div class="meter"><div id="meterFill"></div></div>
+    <div class="warn" id="warn"></div>
+    <div class="actions">
+      <button class="btn stop" id="stopBtn">■ Detener todo</button>
+    </div>
+    <details class="help">
+      <summary>¿No se oye nada?</summary>
+      <ul>
+        <li>Si la barra de arriba se mueve, la app sí está sonando: sube el volumen del teléfono con los botones laterales <em>mientras suena</em>.</li>
+        <li><b>iPhone:</b> revisa el interruptor de silencio (el switch del costado). Con el silencio activo, Safari no reproduce audio.</li>
+        <li><b>Android:</b> el volumen de "multimedia" es distinto al del timbre. Ajústalo mientras suena.</li>
+        <li>Si tienes audífonos o una bocina Bluetooth conectada, el sonido se va para allá.</li>
+        <li>Si la barra no se mueve, toca otra vez el botón del sonido.</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="panel trapBox">
+    <h3>💀 Susto sorpresa</h3>
+    <p>Deja el celular escondido: la pantalla se pone negra y, cuando nadie lo espera, suelta un grito a todo volumen. Toca la pantalla negra para cancelar.</p>
+    <div class="row">
+      <label>Esperar</label>
+      <div class="chips" id="trapChips"></div>
+    </div>
+    <button class="btn trap" id="trapBtn">💀 Armar la trampa</button>
+  </div>
+
+  <footer>
+    🎧 Con audífonos, los susurros y la respiración se mueven alrededor de tu cabeza.<br>
+    Úsalo con responsabilidad: no asustes a personas con problemas del corazón, bebés ni mascotas.<br>
+    Los sonidos se generan en el momento: no se descarga ni se envía nada.
+  </footer>
+</div>
+
+<div id="trap" role="button" tabindex="0" aria-label="Cancelar el susto sorpresa">
+  <div class="skull">💀</div>
+  <div id="trapTime">—</div>
+  <small>toca la pantalla para cancelar</small>
+</div>
+
+<script>
+"use strict";
+/* ==================================================================
+   1) Motor de audio
+   Igual que en "Duerme Bebé": no hay archivos mp3, todo se sintetiza
+   en el momento con la Web Audio API.
+   Cadena: sonido -> grupo -> (seco + reverb) -> master -> limitador -> altavoz
+===================================================================*/
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : v; }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+};
+
+let ctx = null, master = null, dryBus = null, reverbIn = null, limiter = null, analyser = null, meterData = null;
+let cache = {};
+
+// Arma la cadena de audio sobre un contexto (también se usa para pruebas sin altavoz).
+function initGraph(c){
+  ctx = c; cache = {};
+  master = ctx.createGain();   master.gain.value = 0;
+  dryBus = ctx.createGain();
+  reverbIn = ctx.createGain();
+  const rev = ctx.createConvolver(); rev.buffer = makeReverb(3.8);
+  const wet = ctx.createGain(); wet.gain.value = 0.9;
+  // Limitador: deja subir el volumen sin que el altavoz distorsione en los picos.
+  limiter = ctx.createDynamicsCompressor();
+  limiter.threshold.value = -8; limiter.knee.value = 4; limiter.ratio.value = 16;
+  limiter.attack.value = 0.002; limiter.release.value = 0.2;
+  analyser = ctx.createAnalyser(); analyser.fftSize = 1024;
+  meterData = new Float32Array(analyser.fftSize);
+
+  dryBus.connect(master);
+  reverbIn.connect(rev); rev.connect(wet); wet.connect(master);
+  master.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
+}
+
+function audio(){
+  if (ctx) return ctx;
+  initGraph(new (window.AudioContext || window.webkitAudioContext)());
+  // iOS/Safari: un sonido mudo dentro del primer toque "despierta" el audio.
+  try{
+    const b = ctx.createBuffer(1, 1, ctx.sampleRate);
+    const s = ctx.createBufferSource(); s.buffer = b;
+    s.connect(ctx.destination); s.start(0);
+  }catch(e){}
+  applyVolume(0.3);
+  requestAnimationFrame(meterLoop);
+  return ctx;
+}
+
+// Reverb de "sótano": ruido que se apaga lento y oscuro (sin agudos).
+function makeReverb(seconds){
+  const sr = ctx.sampleRate, len = Math.floor(sr * seconds), pre = Math.floor(sr * 0.025);
+  const buf = ctx.createBuffer(2, len, sr);
+  for (let c = 0; c < 2; c++){
+    const d = buf.getChannelData(c);
+    let lp = 0;
+    for (let i = pre; i < len; i++){
+      lp += ((Math.random() * 2 - 1) - lp) * 0.35;           // filtro paso-bajo simple
+      d[i] = lp * Math.pow(1 - i / len, 3.2);
+    }
+  }
+  return buf;
+}
+
+/* --- Materia prima: ruidos y "temblor" aleatorio (se calculan una vez) --- */
+function noiseBuffer(type){
+  if (cache[type]) return cache[type];
+  const len = ctx.sampleRate * 8;
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  if (type === "white"){
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+  } else if (type === "pink"){
+    let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i = 0; i < len; i++){
+      const w = Math.random() * 2 - 1;
+      b0 = 0.99886*b0 + w*0.0555179; b1 = 0.99332*b1 + w*0.0750759;
+      b2 = 0.96900*b2 + w*0.1538520; b3 = 0.86650*b3 + w*0.3104856;
+      b4 = 0.55000*b4 + w*0.5329522; b5 = -0.7616*b5 - w*0.0168980;
+      d[i] = (b0+b1+b2+b3+b4+b5+b6 + w*0.5362) * 0.11;
+      b6 = w * 0.115926;
+    }
+  } else { // brown
+    let last = 0;
+    for (let i = 0; i < len; i++){
+      last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+      d[i] = last * 3.5;
+    }
+  }
+  return (cache[type] = buf);
+}
+
+// Curva aleatoria suave entre -1 y 1 (20 puntos por segundo). Sirve para que
+// las voces tiemblen y raspen de forma irregular, como una garganta de verdad.
+function wobbleBuffer(){
+  if (cache.wob) return cache.wob;
+  const sr = ctx.sampleRate, secs = 10, step = sr / 20, len = sr * secs;
+  const pts = []; for (let i = 0; i < secs * 20; i++) pts.push(Math.random() * 2 - 1);
+  pts.push(pts[0]);                                          // cierra el bucle sin salto
+  const buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
+  for (let i = 0; i < len; i++){
+    const p = i / step, k = Math.floor(p), s = (1 - Math.cos(Math.PI * (p - k))) / 2;
+    d[i] = pts[k] * (1 - s) + pts[k + 1] * s;
+  }
+  return (cache.wob = buf);
+}
+
+/* --- Ayudantes: cada nodo que suena se guarda en su "grupo" para poder pararlo --- */
+function track(G, n, end){ n._end = end || 0; G.nodes.push(n); return n; }
+function osc(G, type, f, t0, t1){
+  const o = ctx.createOscillator(); o.type = type; o.frequency.value = f;
+  o.start(t0); if (t1) o.stop(t1);
+  return track(G, o, t1);
+}
+function noise(G, kind, t0, t1){
+  const s = ctx.createBufferSource(); s.buffer = noiseBuffer(kind); s.loop = true;
+  s.start(t0, Math.random() * 7); if (t1) s.stop(t1);
+  return track(G, s, t1);
+}
+function wobble(G, rate, t0, t1){
+  const s = ctx.createBufferSource(); s.buffer = wobbleBuffer(); s.loop = true;
+  s.playbackRate.value = rate / 20;
+  s.start(t0, Math.random() * 9); if (t1) s.stop(t1);
+  return track(G, s, t1);
+}
+function playBuf(G, buf, t0){
+  const s = ctx.createBufferSource(); s.buffer = buf; s.start(t0);
+  return track(G, s, t0 + buf.duration);
+}
+function gain(v){ const g = ctx.createGain(); g.gain.value = v; return g; }
+function filt(type, f, q){
+  const b = ctx.createBiquadFilter(); b.type = type; b.frequency.value = f;
+  if (q !== undefined) b.Q.value = q;
+  return b;
+}
+function panner(p){
+  if (!ctx.createStereoPanner) return gain(1);
+  const s = ctx.createStereoPanner(); s.pan.value = p; return s;
+}
+function shaper(k){                                          // distorsión suave (tanh)
+  const key = "sh" + k;
+  if (!cache[key]){
+    const n = 2048, c = new Float32Array(n);
+    for (let i = 0; i < n; i++){ const x = i / (n - 1) * 2 - 1; c[i] = Math.tanh(k * x) / Math.tanh(k); }
+    cache[key] = c;
+  }
+  const w = ctx.createWaveShaper(); w.curve = cache[key]; w.oversample = "2x";
+  return w;
+}
+function wire(){ for (let i = 0; i < arguments.length - 1; i++) arguments[i].connect(arguments[i + 1]); return arguments[arguments.length - 1]; }
+// Recorre una lista de puntos [segundo, valor] (rampa exponencial para tonos, lineal para volumen).
+function curve(param, pts, t0, exp){
+  param.setValueAtTime(pts[0][1], t0 + pts[0][0]);
+  for (let i = 1; i < pts.length; i++){
+    const t = t0 + pts[i][0], v = pts[i][1];
+    if (exp) param.exponentialRampToValueAtTime(Math.max(v, 0.0001), t);
+    else param.linearRampToValueAtTime(v, t);
+  }
+}
+function envGain(pts, t0, lv){
+  const g = gain(0), k = lv === undefined ? 1 : lv;
+  curve(g.gain, pts.map(p => [p[0], p[1] * k]), t0, false);
+  return g;
+}
+// Golpe: sube rapidísimo y se apaga en curva exponencial.
+function hit(t, att, dec, peak){
+  const g = gain(0);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(Math.max(peak, 0.0002), t + att);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + att + dec);
+  g.gain.setValueAtTime(0, t + att + dec + 0.005);
+  return g;
+}
+const rnd = (a, b) => a + Math.random() * (b - a);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+/* ==================================================================
+   2) La voz sintética (gritos, demonio, bruja, zombi, lobo, fantasma)
+   Igual que una garganta: una vibración (onda diente de sierra + aire)
+   pasa por "formantes" (filtros que imitan la boca y dan la vocal).
+   El truco del miedo: la "aspereza" — el volumen vibra 30-150 veces por
+   segundo. Ese temblor rápido es lo que el cerebro reconoce como alarma
+   en un grito humano real.
+===================================================================*/
+function voice(G, out, t0, o){
+  const end = t0 + o.dur + 0.05;
+  const s = osc(G, o.wave || "sawtooth", o.f0[0][1], t0, end);
+  curve(s.frequency, o.f0, t0, true);
+  if (o.vib){ const v = osc(G, "sine", o.vib[0], t0, end); wire(v, gain(o.vib[1]), s.detune); }      // vibrato (cents)
+  if (o.jit){ const w = wobble(G, o.jit[0], t0, end); wire(w, gain(o.jit[1]), s.detune); }           // temblor irregular
+
+  const src = gain(1);
+  wire(s, src);
+  if (o.breath){ wire(noise(G, "white", t0, end), gain(o.breath), src); }                            // aire
+
+  let x = src;
+  if (o.rough){                                                                                      // aspereza
+    const depth = o.rough[1], am = gain(1 - depth / 2);
+    const m = o.rough[2] === "rand" ? wobble(G, o.rough[0], t0, end) : osc(G, "sine", o.rough[0], t0, end);
+    wire(m, gain(depth / 2), am.gain);
+    wire(x, am); x = am;
+  }
+  const sum = gain(o.pre || 1);
+  o.formants.forEach(fm => {
+    const f = fm[0], bp = filt("bandpass", Array.isArray(f) ? f[0][1] : f, fm[1]);
+    if (Array.isArray(f)) curve(bp.frequency, f, t0, true);
+    wire(x, bp, gain(fm[2]), sum);
+  });
+  if (o.direct) wire(x, filt("highpass", 1500, 0.7), gain(o.direct), sum);
+  x = sum;
+  if (o.drive){ const sh = shaper(o.drive); wire(x, sh); x = sh; }
+
+  const env = envGain(o.env, t0, o.level === undefined ? 1 : o.level);
+  wire(x, env, filt("highpass", o.hp || 70, 0.7), panner(o.pan || 0), out);
+}
+
+/* ==================================================================
+   3) Los 10 sustos (suenan una vez)
+   Cada uno recibe: grupo G, salida, momento de inicio t0 y volumen lv.
+   Devuelve cuántos segundos dura.
+===================================================================*/
+function gasp(G, out, t0, lv){                     // jadeo antes del grito
+  const n = noise(G, "white", t0, t0 + 0.4);
+  const bp = filt("bandpass", 900, 1.5); curve(bp.frequency, [[0, 900], [0.3, 2300]], t0, true);
+  wire(n, bp, envGain([[0, 0], [0.08, 1], [0.24, 0.8], [0.32, 0]], t0, lv), out);
+}
+function screamVoice(G, out, t0, lv, pitch){
+  const p = pitch || 1;
+  voice(G, out, t0, {
+    dur: 2.7,
+    f0: [[0, 480*p], [0.10, 980*p], [0.35, 1120*p], [1.4, 1210*p], [2.0, 1130*p], [2.7, 700*p]],
+    vib: [6.2, 40], jit: [16, 90], breath: 0.22, rough: [72, 0.75],
+    formants: [[1000, 2.5, 1], [1650, 3.5, 0.8], [3000, 4.5, 0.55], [4200, 6, 0.3]], direct: 0.15,
+    pre: 2.2, drive: 3,
+    env: [[0, 0], [0.05, 1], [2.1, 0.9], [2.7, 0]], level: lv, hp: 250
+  });
+  voice(G, out, t0 + 0.08, {                       // la garganta se "rompe": capa media octava abajo
+    dur: 2.5,
+    f0: [[0, 490*p], [0.27, 560*p], [1.32, 605*p], [1.92, 565*p], [2.5, 380*p]],
+    jit: [30, 140], breath: 0.4, rough: [110, 0.9, "rand"],
+    formants: [[1000, 2.5, 1], [1650, 3.5, 0.8], [3000, 4.5, 0.5]],
+    pre: 2.2, drive: 4,
+    env: [[0, 0], [0.2, 0.35], [1.2, 0.5], [1.9, 0.3], [2.5, 0]], level: lv, hp: 300
+  });
+}
+function grito(G, out, t0, lv){
+  gasp(G, out, t0, 0.18 * lv);
+  screamVoice(G, out, t0 + 0.3, lv, rnd(0.95, 1.06));
+  return 3.1;
+}
+
+function demonio(G, out, t0, lv){
+  const d = 3.6;
+  // voz grave principal, rota y temblorosa
+  voice(G, out, t0, { dur: d, f0: [[0, 105], [0.25, 80], [2.4, 66], [3.6, 48]],
+    jit: [22, 160], breath: 0.5, rough: [31, 0.9, "rand"],
+    formants: [[520, 3, 1], [880, 4, 0.8], [2400, 5, 0.4]], pre: 3, drive: 8,
+    env: [[0, 0], [0.12, 1], [2.9, 0.8], [3.6, 0]], level: lv });
+  // la misma voz una octava abajo (efecto "poseído")
+  voice(G, out, t0, { dur: d, f0: [[0, 52], [0.25, 40], [2.4, 33], [3.6, 24]],
+    jit: [22, 160], rough: [17, 0.8, "rand"],
+    formants: [[300, 2, 1], [620, 3, 0.6], [1200, 4, 0.3]], pre: 3, drive: 5,
+    env: [[0, 0], [0.2, 1], [2.9, 0.8], [3.6, 0]], level: 0.7 * lv });
+  // un chillido escondido arriba: varias voces a la vez
+  voice(G, out, t0 + 0.15, { dur: d - 0.3, f0: [[0, 380], [0.4, 520], [2.8, 470], [3.3, 300]],
+    vib: [7, 50], jit: [14, 80], rough: [55, 0.8], breath: 0.2,
+    formants: [[900, 3, 1], [1500, 4, 0.7], [2800, 5, 0.5]], pre: 2, drive: 3,
+    env: [[0, 0], [0.3, 1], [2.6, 0.8], [3.3, 0]], level: 0.32 * lv, hp: 200 });
+  // retumbo del suelo
+  wire(noise(G, "brown", t0, t0 + d + 0.1), filt("lowpass", 160), envGain([[0, 0], [0.3, 0.9], [3, 0.7], [d, 0]], t0, lv), out);
+  return d + 0.4;
+}
+
+function bruja(G, out, t0, lv){
+  const f0 = [], env = [];
+  let t = 0;
+  for (let i = 0; i < 10; i++){                    // "je-je-je-je..." cada vez más grave
+    const base = 1150 - i * 38 + rnd(-25, 25);
+    f0.push([t, base], [t + 0.11, base * 0.82]);
+    env.push([t, 0], [t + 0.012, 1], [t + 0.07, 0.75], [t + 0.11, 0]);
+    t += 0.155;
+  }
+  t += 0.06;                                       // y la carcajada final larga
+  f0.push([t, 880], [t + 0.35, 1020], [t + 1.3, 640]);
+  env.push([t, 0], [t + 0.05, 1], [t + 0.9, 0.8], [t + 1.3, 0]);
+  const dur = t + 1.35;
+  voice(G, out, t0, { dur, f0, vib: [7.5, 45], jit: [18, 70], breath: 0.35, rough: [48, 0.5],
+    formants: [[560, 4, 1], [1950, 6, 0.85], [2750, 7, 0.6], [3600, 8, 0.3]], direct: 0.1,
+    pre: 2.5, drive: 2.5, env, level: lv, hp: 200 });
+  return dur + 0.3;
+}
+
+function zombi(G, out, t0, lv){
+  voice(G, out, t0, { dur: 1.7, f0: [[0, 115], [0.5, 98], [1.7, 78]],
+    jit: [14, 260], breath: 0.45, rough: [24, 0.95, "rand"],
+    formants: [[[[0, 420], [1.7, 640]], 4, 1], [[[0, 950], [1.7, 1150]], 5, 0.7], [2450, 6, 0.35]],
+    pre: 3, drive: 5, env: [[0, 0], [0.15, 1], [1.3, 0.8], [1.7, 0]], level: lv });
+  voice(G, out, t0 + 1.8, { dur: 1.6, f0: [[0, 125], [0.25, 150], [1.6, 85]],
+    jit: [14, 280], breath: 0.5, rough: [27, 0.95, "rand"],
+    formants: [[[[0, 700], [1.6, 420]], 4, 1], [[[0, 1150], [1.6, 900]], 5, 0.7], [2450, 6, 0.35]],
+    pre: 3, drive: 6, env: [[0, 0], [0.1, 1], [1.1, 0.85], [1.6, 0]], level: lv });
+  // gorgoteo de garganta
+  const am = gain(0.5);
+  wire(wobble(G, 35, t0, t0 + 3.5), gain(0.5), am.gain);
+  wire(noise(G, "white", t0, t0 + 3.5), filt("bandpass", 550, 3), am,
+       envGain([[0, 0], [0.3, 0.6], [3.0, 0.5], [3.4, 0]], t0, lv), out);
+  return 3.6;
+}
+
+function lobo(G, out, t0, lv){
+  const wolf = (t, f, pan, l) => voice(G, out, t, { dur: 4.2, wave: "triangle",
+    f0: [[0, f*0.55], [0.45, f*0.95], [0.8, f], [3.0, f*0.97], [3.6, f*0.8], [4.2, f*0.6]],
+    vib: [4.5, 18], jit: [5, 20], breath: 0.04,
+    formants: [[700, 1.5, 1], [1400, 3, 0.35], [2600, 4, 0.12]], pre: 1.5,
+    env: [[0, 0], [0.35, 1], [3.3, 0.85], [4.2, 0]], pan, level: l, hp: 150 });
+  wolf(t0, rnd(570, 630), -0.45, lv);
+  wolf(t0 + 1.6, rnd(660, 720), 0.5, 0.65 * lv);
+  return 6.2;
+}
+
+// Puerta: la bisagra se "atasca y suelta" cientos de veces por segundo.
+// Esos golpecitos hacen vibrar la madera (filtros muy resonantes) y suena el rechinido.
+function creakBuffer(dur){
+  const sr = ctx.sampleRate, len = Math.floor(dur * sr);
+  const buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
+  const ctrl = [0.05, rnd(0.45, 0.75), 0.92, rnd(0.3, 0.6), rnd(0.7, 0.9), 0.12];
+  let t = 0.03;
+  while (t < dur - 0.02){
+    const p = t / dur * (ctrl.length - 1), k = Math.floor(p), s = (1 - Math.cos(Math.PI * (p - k))) / 2;
+    const shape = ctrl[k] * (1 - s) + ctrl[k + 1] * s;
+    const rate = 40 * Math.pow(15, shape);           // de 40 a 600 golpecitos por segundo
+    const fade = Math.min(1, t / 0.15, (dur - t) / 0.2);
+    d[Math.floor(t * sr)] += rnd(0.5, 1) * fade;
+    t += (1 / rate) * rnd(0.8, 1.2);
+  }
+  return buf;
+}
+function thud(G, out, t, lv){                      // golpe seco de madera
+  const o = osc(G, "sine", 120, t, t + 0.5); curve(o.frequency, [[0, 120], [0.12, 48]], t, true);
+  wire(o, hit(t, 0.004, 0.35, 0.9 * lv), out);
+  wire(noise(G, "white", t, t + 0.2), filt("bandpass", 700, 1.2), hit(t, 0.002, 0.12, 1.2 * lv), out);
+}
+function puerta(G, out, t0, lv){
+  const dur = rnd(3.0, 3.6);
+  const s = playBuf(G, creakBuffer(dur), t0);
+  const sum = gain(1);
+  [[620, 18, 1], [1380, 22, 0.7], [2650, 25, 0.45], [3900, 28, 0.2]].forEach(r =>
+    wire(s, filt("bandpass", r[0] * rnd(0.9, 1.1), r[1]), gain(r[2]), sum));
+  wire(s, filt("lowpass", 300), gain(0.3), sum);
+  wire(sum, gain(26 * lv), out);
+  thud(G, out, t0 + dur + 0.05, 0.8 * lv);
+  return dur + 0.6;
+}
+
+function knock(G, out, t, lv){
+  const o = osc(G, "sine", 150, t, t + 0.3); curve(o.frequency, [[0, 150], [0.06, 75]], t, true);
+  wire(o, hit(t, 0.002, 0.16, 0.9 * lv), out);
+  const n = noise(G, "white", t, t + 0.12);
+  wire(n, filt("bandpass", 950, 1.4), hit(t, 0.001, 0.05, 2.2 * lv), out);
+  wire(n, filt("bandpass", 2300, 3), hit(t, 0.001, 0.03, 1.0 * lv), out);
+}
+function golpes(G, out, t0, lv){
+  [0, 0.3, 0.6].forEach(dt => knock(G, out, t0 + dt, 0.5 * lv));      // toc, toc, toc...
+  const t2 = t0 + 2.6;                                                 // ...silencio... ¡PUM PUM PUM!
+  [0, 0.22, 0.44, 0.62, 0.82, 1.0, 1.2, 1.38].forEach(dt =>
+    knock(G, out, t2 + dt + rnd(0, 0.04), rnd(0.85, 1) * lv));
+  const am = gain(0.5);                                                // la puerta traquetea
+  wire(wobble(G, 40, t2, t2 + 1.7), gain(0.5), am.gain);
+  wire(noise(G, "white", t2, t2 + 1.7), filt("bandpass", 1800, 6), am,
+       envGain([[0, 0], [0.05, 1], [1.4, 0.8], [1.6, 0]], t2, 0.5 * lv), out);
+  knock(G, out, t2 + 3.4, 0.9 * lv);                                   // ...y uno más, lento
+  return 6.4;
+}
+
+// Cadenas: cada eslabón es una campanita metálica de 4 tonos que se apaga rápido.
+function chainBuffer(){
+  const sr = ctx.sampleRate, dur = 3.8, len = Math.floor(dur * sr);
+  const buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
+  function clink(t, amp, base, tau){
+    const i0 = Math.floor(t * sr);
+    [1, 2.32, 3.81, 5.4].forEach((r, j) => {
+      const f = base * r * rnd(0.96, 1.04), a = amp / Math.sqrt(j + 1), ta = tau / (1 + j * 0.5);
+      const n = Math.min(len - i0, Math.floor(ta * 6 * sr)), w = 2 * Math.PI * f / sr, ph = Math.random() * 6.28;
+      for (let k = 0; k < n; k++) d[i0 + k] += a * Math.sin(ph + w * k) * Math.exp(-k / (ta * sr));
+    });
+  }
+  let t = 0.15;
+  while (t < 2.6){                                  // arrastre
+    const dens = Math.sin(Math.PI * (t - 0.15) / 2.45);
+    clink(t, rnd(0.15, 0.65) * (0.4 + 0.6 * dens), rnd(1800, 4000), rnd(0.015, 0.055));
+    t += 0.008 + Math.random() * 0.06 * (1.2 - dens);
+  }
+  clink(2.85, 1.0, rnd(500, 580), 0.35);            // ¡CLANK! final y rebotes
+  clink(2.86, 0.6, 1300, 0.2);
+  [3.0, 3.1, 3.17, 3.25, 3.3].forEach((tt, i) => clink(tt, 0.5 / (i + 1), rnd(1500, 3000), 0.04));
+  let peak = 0; for (let i = 0; i < len; i++) peak = Math.max(peak, Math.abs(d[i]));
+  for (let i = 0; i < len; i++) d[i] *= 0.9 / peak;
+  return buf;
+}
+function cadenas(G, out, t0, lv){
+  const pn = panner(-0.6);
+  if (pn.pan) curve(pn.pan, [[0, -0.6], [2.6, 0.6]], t0, false);          // pasan frente a ti
+  wire(playBuf(G, chainBuffer(), t0), gain(lv), pn, out);
+  const am = gain(0.5);                                                    // raspado contra el piso
+  wire(wobble(G, 30, t0, t0 + 2.8), gain(0.5), am.gain);
+  wire(noise(G, "white", t0, t0 + 2.8), filt("bandpass", 3000, 1.5), am,
+       envGain([[0, 0], [0.4, 0.25], [2.2, 0.2], [2.7, 0]], t0, lv), pn);
+  thud(G, out, t0 + 2.85, 0.6 * lv);
+  return 4;
+}
+
+// Violines asesinos: acordes chirriantes que chocan entre sí (Mi, Fa y La#).
+function violines(G, out, t0, lv){
+  const bus = gain(1), pk = filt("peaking", 3200, 1); pk.gain.value = 6;
+  wire(bus, filt("highpass", 500, 0.7), pk, filt("lowpass", 8000, 0.7), gain(lv), out);
+  const vib = osc(G, "sine", 9, t0, t0 + 4); const vibG = gain(30); wire(vib, vibG);
+  const notes = [1318.5, 1396.9, 1864.7];
+  const stab = (t, mul, len) => {
+    notes.forEach(f => [-9, 9].forEach(c => {
+      const o = osc(G, "sawtooth", f * mul, t, t + len + 0.05); o.detune.value = c; vibG.connect(o.detune);
+      wire(o, envGain([[0, 0], [0.006, 0.35], [0.06, 0.22], [len, 0]], t), bus);
+    }));
+    wire(noise(G, "white", t, t + 0.06), filt("bandpass", 4500, 1.2), envGain([[0, 0], [0.004, 0.5], [0.05, 0]], t), bus);
+  };
+  for (let i = 0; i < 9; i++) stab(t0 + i * 0.21, 1 + i * 0.004, 0.17);
+  const tl = t0 + 9 * 0.21 + 0.05;                                         // chirrido final que sube
+  notes.forEach(f => [-12, 0, 12].forEach(c => {
+    const o = osc(G, "sawtooth", f, tl, tl + 1.5); o.detune.value = c; vibG.connect(o.detune);
+    curve(o.frequency, [[0, f * 1.04], [1.3, f * 1.25]], tl, true);
+    wire(o, envGain([[0, 0], [0.02, 0.3], [1.0, 0.3], [1.4, 0]], tl), bus);
+  }));
+  return tl - t0 + 1.6;
+}
+
+// Campanas: los tonos de una campana no son armónicos (por eso suenan "frías").
+function campana(G, out, t0, lv){
+  const f = 196;
+  const parts = [[0.5, 0.55, 7], [0.502, 0.3, 7.5], [1, 0.7, 5], [1.19, 0.5, 4], [1.5, 0.3, 3],
+                 [2, 0.6, 2.6], [2.66, 0.25, 1.6], [3.01, 0.25, 1.4], [4.16, 0.15, 1.0], [5.43, 0.1, 0.7]];
+  [0, 3.2, 6.4].forEach(dt => {
+    const t = t0 + dt;
+    parts.forEach(p => wire(osc(G, "sine", f * p[0], t, t + p[2] + 0.05), hit(t, 0.003, p[2], p[1] * lv), out));
+    wire(noise(G, "white", t, t + 0.1), filt("highpass", 2500), hit(t, 0.001, 0.06, 0.4 * lv), out);
+  });
+  return 6.4 + 7.6;
+}
+
+// El golpe del susto sorpresa: impacto grave + grito + violines + demonio.
+function susto(G, out, t0, lv){
+  const o = osc(G, "sine", 75, t0, t0 + 1.6); curve(o.frequency, [[0, 75], [0.9, 28]], t0, true);
+  wire(o, shaper(3), hit(t0, 0.005, 1.4, 1.0 * lv), out);
+  wire(noise(G, "white", t0, t0 + 0.6), filt("lowpass", 3000), hit(t0, 0.002, 0.5, 0.9 * lv), out);
+  screamVoice(G, out, t0 + 0.02, 1.15 * lv, 1.05);
+  const notes = [1318.5, 1396.9, 1864.7];
+  notes.forEach(f => [-15, 15].forEach(c => {
+    const s = osc(G, "sawtooth", f, t0, t0 + 2.2); s.detune.value = c;
+    curve(s.frequency, [[0, f], [2.0, f * 1.3]], t0, true);
+    wire(s, filt("highpass", 600), envGain([[0, 0], [0.01, 0.12], [1.6, 0.1], [2.1, 0]], t0, lv), out);
+  }));
+  voice(G, out, t0, { dur: 2.4, f0: [[0, 90], [0.3, 70], [2.4, 45]], jit: [22, 160], breath: 0.5,
+    rough: [31, 0.9, "rand"], formants: [[520, 3, 1], [880, 4, 0.8], [2400, 5, 0.4]], pre: 3, drive: 8,
+    env: [[0, 0], [0.05, 1], [1.8, 0.7], [2.4, 0]], level: 0.6 * lv });
+  return 3.2;
+}
+
+/* ==================================================================
+   4) Los 5 ambientes (en bucle). Funcionan con un "programador":
+   cada 250 ms se agendan los eventos del siguiente segundo usando el
+   reloj del audio (ctx.currentTime), que es más preciso que setTimeout.
+===================================================================*/
+const VOWELS = [[800, 1200, 2500], [450, 1900, 2600], [300, 2250, 2900], [520, 850, 2400], [350, 750, 2300]];
+function susurros(G, out, lv){
+  const t0 = ctx.currentTime;
+  const people = [{ pan: -0.8, l: 1 }, { pan: 0.75, l: 0.9 }, { pan: 0.1, l: 0.5, far: true }].map(p => {
+    const n = noise(G, "white", t0);
+    const vg = gain(0), sg = gain(0), sum = gain(1), pn = panner(p.pan);
+    const fs = [0, 1, 2].map(i => filt("bandpass", VOWELS[0][i], [9, 11, 12][i]));
+    fs.forEach((f, i) => wire(vg, f, gain([1, 0.8, 0.5][i]), sum));
+    wire(n, vg); wire(n, filt("highpass", 4200, 0.7), sg, pn);
+    wire(sum, pn);
+    const lvl = gain(p.l * lv);
+    if (p.far) wire(pn, filt("lowpass", 2500), lvl, out); else wire(pn, lvl, out);
+    return { vg, sg, fs, pn, next: t0 + rnd(0.3, 1.8) };
+  });
+  function word(v, t){
+    if (v.pn.pan) v.pn.pan.linearRampToValueAtTime(Math.max(-1, Math.min(1, v.pn.pan.value + rnd(-0.4, 0.4))), t);
+    const syl = 2 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < syl; i++){
+      const c = Math.random();
+      if (c < 0.35){                                 // "sss" / "shh"
+        v.sg.gain.setValueAtTime(0, t); v.sg.gain.linearRampToValueAtTime(rnd(0.3, 0.6), t + 0.03);
+        v.sg.gain.linearRampToValueAtTime(0, t + 0.09); t += 0.08;
+      } else if (c < 0.6){                           // "t" / "k"
+        v.sg.gain.setValueAtTime(0, t); v.sg.gain.linearRampToValueAtTime(0.45, t + 0.003);
+        v.sg.gain.linearRampToValueAtTime(0, t + 0.02); t += 0.025;
+      }
+      const V = pick(VOWELS), sd = rnd(0.08, 0.2);   // vocal susurrada
+      v.fs.forEach((f, k) => f.frequency.setTargetAtTime(V[k] * rnd(0.9, 1.1), t, 0.02));
+      v.vg.gain.setValueAtTime(0, t); v.vg.gain.linearRampToValueAtTime(1, t + 0.025);
+      v.vg.gain.linearRampToValueAtTime(0.7, t + sd * 0.7); v.vg.gain.linearRampToValueAtTime(0, t + sd);
+      t += sd + 0.012;
+    }
+    if (Math.random() < 0.2){                        // un "shhhhh" largo de vez en cuando
+      v.sg.gain.setValueAtTime(0, t); v.sg.gain.linearRampToValueAtTime(0.45, t + 0.25);
+      v.sg.gain.linearRampToValueAtTime(0, t + 1.0); t += 1.0;
+    }
+    return t;
+  }
+  return { tick(until){
+    people.forEach(v => { while (v.next < until){ v.next = word(v, v.next) + rnd(0.4, Math.random() < 0.4 ? 3.5 : 1.2); } });
+  }};
+}
+
+function latido(G, out, lv){
+  const t0 = ctx.currentTime; let next = t0 + 0.4;
+  wire(noise(G, "brown", t0), filt("lowpass", 260), gain(0.3 * lv), out);         // sangre en los oídos
+  const rg = gain(0); rg.gain.setValueAtTime(0, t0); rg.gain.linearRampToValueAtTime(0.012 * lv, t0 + 40);
+  wire(osc(G, "sine", 7400, t0), rg, out);                                         // pitido de pánico
+  const bus = gain(2.5); wire(bus, shaper(3), gain(0.6 * lv), out);               // armónicos: que se oiga en el celular
+  function thump(t, a){
+    const o = osc(G, "sine", 95, t, t + 0.4); curve(o.frequency, [[0, 95], [0.15, 40]], t, true);
+    wire(o, hit(t, 0.012, 0.28, a), bus);
+    wire(noise(G, "brown", t, t + 0.25), filt("bandpass", 320, 1.2), hit(t, 0.008, 0.16, a * 0.5), out);  // "golpe" audible en bocinas chicas
+  }
+  return { tick(until){
+    while (next < until){
+      const bpm = 62 + 108 * (1 - Math.exp(-(next - t0) / 20)), beat = 60 / bpm;   // se acelera hasta ~170
+      thump(next, 0.9); thump(next + Math.min(0.28, beat * 0.35), 0.6);
+      next += beat;
+    }
+  }};
+}
+
+function respiracion(G, out, lv){
+  const t0 = ctx.currentTime; let next = t0 + 0.4;
+  const bus = gain(lv); wire(bus, panner(0.55), out);                              // justo detrás, a tu derecha
+  function breath(t, dur, f1, f2, a, rasp){
+    const bp = filt("bandpass", f1, 1.3); curve(bp.frequency, [[0, f1], [dur, f2]], t, true);
+    const bp2 = filt("bandpass", f1 * 2.4, 3);
+    const env = envGain([[0, 0], [dur * 0.35, a], [dur * 0.7, a * 0.8], [dur, 0]], t);
+    const n = noise(G, "white", t, t + dur + 0.05);
+    wire(n, bp, env); wire(n, bp2, gain(0.4), env); wire(env, bus);
+    if (rasp){                                       // carraspeo: voz rota, muy grave
+      const o = osc(G, "sawtooth", rnd(42, 55), t, t + dur);
+      wire(wobble(G, 12, t, t + dur), gain(300), o.detune);
+      const am = gain(0.5); wire(wobble(G, 18, t, t + dur), gain(0.5), am.gain);
+      wire(o, filt("bandpass", 650, 2), am, envGain([[0, 0], [dur * 0.2, a * 0.9], [dur * 0.8, a * 0.6], [dur, 0]], t), bus);
+    }
+  }
+  return { tick(until){
+    while (next < until){
+      const ins = rnd(1.0, 1.5), exh = rnd(1.3, 1.9);
+      breath(next, ins, 900, 1700, 0.9, false);
+      breath(next + ins + 0.15, exh, 1100, 500, 0.8, Math.random() < 0.6);
+      next += ins + 0.15 + exh + rnd(0.3, 1.3);
+    }
+  }};
+}
+
+// "Estrellita" (la de la app de la bebé) en tono menor, desafinada y cada vez más lenta.
+const SEMI = { C:0, "C#":1, D:2, "D#":3, E:4, F:5, "F#":6, G:7, "G#":8, A:9, "A#":10, B:11 };
+function freq(note){
+  const m = /^([A-G]#?)(\d)$/.exec(note);
+  return 440 * Math.pow(2, (SEMI[m[1]] + (parseInt(m[2], 10) + 1) * 12 - 69) / 12);
+}
+const LULLABY = [
+  ["C5",1],["C5",1],["G5",1],["G5",1],["G#5",1],["G#5",1],["G5",2],
+  ["F5",1],["F5",1],["D#5",1],["D#5",1],["D5",1],["D5",1],["C5",2],
+  ["G5",1],["G5",1],["F5",1],["F5",1],["D#5",1],["D#5",1],["D5",2],
+  ["G5",1],["G5",1],["F5",1],["F5",1],["D#5",1],["D#5",1],["D5",2],
+  ["C5",1],["C5",1],["G5",1],["G5",1],["G#5",1],["G#5",1],["G5",2],
+  ["F5",1],["F5",1],["D#5",1],["D#5",1],["D5",1],["D5",1],["C5",3]
+];
+function cajaMaldita(G, out, lv){
+  const t0 = ctx.currentTime;
+  const bus = gain(lv); wire(bus, filt("lowpass", 5200), out);
+  const wobG = gain(38); wire(osc(G, "sine", 0.23, t0), wobG);                     // cinta "derretida"
+  const wobR = gain(14); wire(wobble(G, 3, t0), wobR);
+  [65.41, 92.5].forEach(f => wire(osc(G, "triangle", f, t0), filt("lowpass", 500), gain(0.06 * lv), out)); // tritono de fondo
+  wire(noise(G, "pink", t0), filt("highpass", 3000), gain(0.02 * lv), out);        // siseo de grabación vieja
+  function note(f, t, dur){
+    [[1, "sine", 0.3, 1], [2, "triangle", 0.07, 0.6], [5.4, "sine", 0.03, 0.15]].forEach(p => {
+      const o = osc(G, p[1], f * p[0], t, t + dur + 0.05);
+      o.detune.value = rnd(-30, 30); wobG.connect(o.detune); wobR.connect(o.detune);
+      wire(o, hit(t, 0.012, dur * p[3], p[2]), bus);
+    });
+  }
+  let loop = 0, idx = 0, next = t0 + 0.4;
+  return { tick(until){
+    while (next < until){
+      const k = loop % 6, beat = 60 / (100 * Math.pow(0.88, k)), pitch = Math.pow(2, -k * 0.4 / 12);
+      const n = LULLABY[idx];
+      if (Math.random() > 0.05) note(freq(n[0]) * pitch, next, Math.min(n[1] * beat * 1.8, 2.4));
+      next += n[1] * beat * rnd(0.94, 1.08);
+      if (++idx >= LULLABY.length){ idx = 0; loop++; next += beat * 3; }
+    }
+  }};
+}
+
+function fantasma(G, out, t, lv){
+  const f = pick([330, 370, 415, 440]);
+  voice(G, out, t, { dur: 3.6, wave: "triangle", f0: [[0, f*0.8], [1.0, f*1.25], [2.2, f*1.1], [3.6, f*0.7]],
+    vib: [5.5, 35], jit: [4, 20], breath: 0.03, formants: [[500, 1, 1], [900, 3, 0.4]], pre: 1.5,
+    env: [[0, 0], [1.2, 1], [2.6, 0.8], [3.6, 0]], pan: rnd(-0.8, 0.8), level: lv, hp: 150 });
+}
+function casa(G, out, lv){
+  const t0 = ctx.currentTime;
+  const dr = gain(0); dr.gain.setValueAtTime(0, t0); dr.gain.linearRampToValueAtTime(0.16 * lv, t0 + 4);
+  [55, 55.7, 77.8].forEach(f => wire(osc(G, "sawtooth", f, t0), dr));             // zumbido grave que "late"
+  const lp = filt("lowpass", 300, 2); wire(wobble(G, 0.15, t0), gain(150), lp.frequency);
+  wire(dr, lp, out);
+  const bp = filt("bandpass", 600, 3); wire(wobble(G, 0.2, t0), gain(400), bp.frequency);   // viento
+  const wg = gain(0.6 * lv); wire(wobble(G, 0.12, t0), gain(0.4 * lv), wg.gain);
+  const wp = panner(0); if (wp.pan) wire(wobble(G, 0.1, t0), gain(0.7), wp.pan);
+  wire(noise(G, "pink", t0), bp, wg, wp, out);
+  const far = gain(0.35); wire(far, filt("lowpass", 1600), out);                   // cosas que pasan lejos
+  let nextGhost = t0 + 3, nextEvent = t0 + 9;
+  return { tick(until){
+    while (nextGhost < until){ fantasma(G, out, nextGhost, 0.45 * lv); nextGhost += rnd(7, 15); }
+    while (nextEvent < until){
+      const S = SHOTS[pick(["puerta", "cadenas", "golpes", "bruja", "lobo"])];
+      S.build(G, far, nextEvent, S.level * lv);
+      nextEvent += rnd(12, 24);
+    }
+  }};
+}
+
+/* ==================================================================
+   5) Catálogo (10 sustos + 5 ambientes = 15). "level" iguala volúmenes,
+   "wet" es cuánta reverb lleva cada uno.
+===================================================================*/
+const SHOTS = {
+  grito:    { name:"Grito desgarrador",  ico:"😱", build:grito,    level:1,   wet:0.35 },
+  demonio:  { name:"Demonio",            ico:"👹", build:demonio,  level:1,   wet:0.45 },
+  bruja:    { name:"Risa de bruja",      ico:"🧙‍♀️", build:bruja,    level:1.4,   wet:0.5 },
+  zombi:    { name:"Zombi",              ico:"🧟", build:zombi,    level:1.25,   wet:0.3 },
+  lobo:     { name:"Aullido de lobo",    ico:"🐺", build:lobo,     level:0.7,   wet:0.7 },
+  puerta:   { name:"Puerta que rechina", ico:"🚪", build:puerta,   level:3,   wet:0.4 },
+  golpes:   { name:"Golpes en la puerta",ico:"👊", build:golpes,   level:1.5,   wet:0.35 },
+  cadenas:  { name:"Cadenas",            ico:"⛓️", build:cadenas,  level:2.5,   wet:0.45 },
+  violines: { name:"Violines asesinos",  ico:"🎻", build:violines, level:0.8,   wet:0.4 },
+  campana:  { name:"Campanadas",         ico:"🔔", build:campana,  level:0.9,   wet:0.6 }
+};
+const AMBIENTS = {
+  susurros:    { name:"Susurros",              ico:"🗣️", build:susurros,    level:2.2, wet:0.3 },
+  latido:      { name:"Latido de pánico",      ico:"💓", build:latido,      level:1, wet:0.1 },
+  respiracion: { name:"Respiración en la nuca",ico:"😮‍💨", build:respiracion, level:3, wet:0.12 },
+  caja:        { name:"Caja de música maldita",ico:"🎠", build:cajaMaldita, level:2, wet:0.55 },
+  casa:        { name:"Casa embrujada",        ico:"🏚️", build:casa,        level:1, wet:0.6 }
+};
+
+/* ==================================================================
+   6) Estado: varios sustos a la vez + un ambiente
+===================================================================*/
+const state = { shots:{}, ambient:null, amb:null, trap:null, trapSecs:30 };
+
+function newGroup(wet){
+  const input = gain(1), vol = gain(1), send = gain(wet);
+  wire(input, vol, dryBus); wire(vol, send, reverbIn);
+  return { input, vol, nodes:[], timers:[] };
+}
+function killGroup(G, fade){
+  if (!G || G.dead) return;
+  G.dead = true; fade = fade || 0.1;
+  G.timers.forEach(id => { clearInterval(id); clearTimeout(id); });
+  const t = ctx.currentTime;
+  G.vol.gain.cancelScheduledValues(t);
+  G.vol.gain.setValueAtTime(G.vol.gain.value, t);
+  G.vol.gain.linearRampToValueAtTime(0, t + fade);
+  setTimeout(() => {
+    G.nodes.forEach(n => { try{ n.stop(); }catch(e){} });
+    try{ G.vol.disconnect(); }catch(e){}
+    G.nodes = [];
+  }, fade * 1000 + 80);
+}
+// Olvida los nodos que ya terminaron (para que un ambiente de horas no acumule memoria).
+function prune(G){ const t = ctx.currentTime - 1; G.nodes = G.nodes.filter(n => !n._end || n._end > t); }
+
+function playShot(id){
+  audio(); checkAudioReady();
+  const S = SHOTS[id];
+  if (state.shots[id]) killGroup(state.shots[id].G, 0.05);   // si ya sonaba, vuelve a empezar
+  const G = newGroup(S.wet);
+  const dur = S.build(G, G.input, ctx.currentTime + 0.03, S.level);
+  const entry = { G };
+  state.shots[id] = entry;
+  G.timers.push(setTimeout(() => {
+    if (state.shots[id] === entry){ delete state.shots[id]; render(); }
+    try{ G.vol.disconnect(); }catch(e){}
+  }, (dur + 0.2) * 1000));
+  render();
+}
+
+function setAmbient(id){
+  audio(); checkAudioReady();
+  const same = state.ambient === id;
+  if (state.amb) killGroup(state.amb.G, 0.6);
+  state.amb = null;
+  state.ambient = same ? null : id;
+  if (state.ambient){
+    const A = AMBIENTS[id], G = newGroup(A.wet), t = ctx.currentTime;
+    G.vol.gain.setValueAtTime(0, t); G.vol.gain.linearRampToValueAtTime(1, t + 1.5);
+    const h = A.build(G, G.input, A.level);
+    const run = () => { h.tick(ctx.currentTime + 1.2); prune(G); };
+    run();
+    G.timers.push(setInterval(run, 250));
+    state.amb = { G };
+  }
+  render();
+}
+
+function stopAll(){
+  Object.values(state.shots).forEach(e => killGroup(e.G, 0.1));
+  state.shots = {};
+  if (state.amb) killGroup(state.amb.G, 0.2);
+  state.amb = null; state.ambient = null;
+  cancelTrap();
+  render();
+}
+
+/* --- Susto sorpresa: el grito se agenda en el reloj del audio, así suena
+       a tiempo aunque el navegador frene los temporizadores de la página. --- */
+const TRAPS = [10, 30, 60, -1];
+const trapEl = document.getElementById("trap");
+const trapTime = document.getElementById("trapTime");
+
+function armTrap(){
+  audio(); checkAudioReady();
+  cancelTrap();
+  const secs = state.trapSecs === -1 ? rnd(20, 70) : state.trapSecs;
+  const G = newGroup(0.35);
+  susto(G, G.input, ctx.currentTime + secs, 1);
+  state.trap = { G, at: Date.now() + secs * 1000, id: setInterval(trapTick, 200), fired:false };
+  trapEl.classList.remove("boo");
+  trapEl.classList.add("on");
+  trapTick();
+  keepAwake(true);
+}
+function trapTick(){
+  const T = state.trap; if (!T) return;
+  const left = T.at - Date.now();
+  if (!T.fired){
+    trapTime.textContent = state.trapSecs === -1 ? "?" : fmt(left);
+    if (left <= 0){
+      T.fired = true;
+      trapEl.classList.add("boo");
+      setTimeout(() => { if (state.trap === T){ clearInterval(T.id); state.trap = null; trapEl.classList.remove("on", "boo"); render(); } }, 3400);
+    }
+  }
+}
+function cancelTrap(){
+  const T = state.trap; if (!T) return;
+  clearInterval(T.id);
+  if (!T.fired) killGroup(T.G, 0.05);
+  state.trap = null;
+  trapEl.classList.remove("on", "boo");
+  render();
+}
+function fmt(ms){
+  const s = Math.max(0, Math.ceil(ms / 1000));
+  return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}
+
+/* ==================================================================
+   7) Volumen
+===================================================================*/
+const volEl = document.getElementById("vol");
+const volTxt = document.getElementById("volTxt");
+function volValue(){ const v = parseInt(volEl.value, 10) / 100; return v * v * 1.6; }   // curva natural al oído
+function applyVolume(seconds){
+  if (!ctx) return;
+  const t = ctx.currentTime;
+  master.gain.cancelScheduledValues(t);
+  master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), t);
+  master.gain.linearRampToValueAtTime(volValue(), t + (seconds || 0.2));
+}
+volEl.addEventListener("input", () => {
+  volTxt.textContent = volEl.value + "%";
+  store.set("nt_vol", volEl.value);
+  applyVolume(0.15);
+});
+
+/* ==================================================================
+   8) Interfaz
+===================================================================*/
+function tile(id, item, cls, onClick){
+  const b = document.createElement("button");
+  b.className = "tile " + cls; b.type = "button"; b.dataset.id = id;
+  b.setAttribute("aria-pressed", "false");
+  b.innerHTML = '<span class="ico">' + item.ico + "</span><span>" + item.name + "</span>";
+  b.addEventListener("click", () => onClick(id));
+  return b;
+}
+const shotGrid = document.getElementById("shotGrid");
+const ambGrid = document.getElementById("ambGrid");
+Object.entries(SHOTS).forEach(([id, s]) => shotGrid.appendChild(tile(id, s, "shot", playShot)));
+Object.entries(AMBIENTS).forEach(([id, a]) => ambGrid.appendChild(tile(id, a, "amb", setAmbient)));
+
+const trapChips = document.getElementById("trapChips");
+TRAPS.forEach(s => {
+  const c = document.createElement("button");
+  c.className = "chip"; c.type = "button"; c.dataset.s = s;
+  c.textContent = s === -1 ? "Al azar" : s < 60 ? s + " s" : (s / 60) + " min";
+  c.addEventListener("click", () => { state.trapSecs = s; store.set("nt_trap", s); render(); });
+  trapChips.appendChild(c);
+});
+
+const statusEl = document.getElementById("status");
+const meterFill = document.getElementById("meterFill");
+const warnEl = document.getElementById("warn");
+
+function meterLoop(){
+  if (analyser){
+    analyser.getFloatTimeDomainData(meterData);
+    let sum = 0;
+    for (let i = 0; i < meterData.length; i++) sum += meterData[i] * meterData[i];
+    meterFill.style.width = Math.min(100, Math.sqrt(sum / meterData.length) * 320).toFixed(1) + "%";
+  }
+  requestAnimationFrame(meterLoop);
+}
+
+function checkAudioReady(){
+  if (!ctx) return;
+  const done = () => {
+    const ok = ctx.state === "running";
+    warnEl.textContent = ok ? "" : "El navegador tiene el sonido en pausa. Vuelve a tocar el botón del sonido.";
+    warnEl.classList.toggle("on", !ok);
+  };
+  const r = ctx.resume();
+  if (r && r.then) r.then(done).catch(done); else done();
+}
+
+function render(){
+  shotGrid.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-pressed", String(!!state.shots[b.dataset.id])));
+  ambGrid.querySelectorAll(".tile").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === state.ambient)));
+  trapChips.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", String(parseInt(c.dataset.s, 10) === state.trapSecs)));
+  const parts = Object.keys(state.shots).map(id => SHOTS[id].name);
+  if (state.ambient) parts.push(AMBIENTS[state.ambient].name);
+  statusEl.textContent = parts.length ? "▶ " + parts.join(" + ") : "Toca un sonido… si te atreves";
+  keepAwake(!!state.ambient || !!state.trap);
+}
+
+document.getElementById("stopBtn").addEventListener("click", stopAll);
+document.getElementById("trapBtn").addEventListener("click", armTrap);
+trapEl.addEventListener("click", () => { if (!trapEl.classList.contains("boo")) cancelTrap(); });
+trapEl.addEventListener("keydown", e => { if (e.key === "Escape" || e.key === "Enter") cancelTrap(); });
+
+// Mantener la pantalla encendida mientras suena un ambiente o la trampa está armada
+let wakeLock = null;
+async function keepAwake(on){
+  try{
+    if (on && !wakeLock && "wakeLock" in navigator){
+      wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", () => { wakeLock = null; });
+    } else if (!on && wakeLock){
+      await wakeLock.release(); wakeLock = null;
+    }
+  }catch(e){}
+}
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible"){
+    if (ctx) ctx.resume();
+    if (state.ambient || state.trap) keepAwake(true);
+  }
+});
+
+volEl.value = store.get("nt_vol", 85);
+volTxt.textContent = volEl.value + "%";
+const savedTrap = parseInt(store.get("nt_trap", "30"), 10);
+state.trapSecs = TRAPS.includes(savedTrap) ? savedTrap : 30;
+render();
+</script>
+</body>
+</html>
