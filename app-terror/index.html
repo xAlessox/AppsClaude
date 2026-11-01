@@ -55,6 +55,8 @@
   }
   .tile:active{transform:scale(.95)}
   .tile .ico{font-size:26px;line-height:1}
+  .tile .hint{visibility:hidden;font-size:10.5px;font-weight:700;color:var(--pumpkin);letter-spacing:.2px}
+  .tile[aria-pressed="true"] .hint{visibility:visible}
   .tile[aria-pressed="true"]{background:var(--card-on);border-color:var(--blood);box-shadow:0 0 0 1px var(--blood) inset,0 0 18px rgba(227,32,43,.35)}
   .shot[aria-pressed="true"] .ico{animation:shake .14s linear infinite}
   .amb[aria-pressed="true"] .ico{animation:pulse 2.4s ease-in-out infinite}
@@ -160,7 +162,8 @@
   <footer>
     🎧 Con audífonos, los susurros y la respiración se mueven alrededor de tu cabeza.<br>
     Úsalo con responsabilidad: no asustes a personas con problemas del corazón, bebés ni mascotas.<br>
-    Los sonidos se generan en el momento: no se descarga ni se envía nada.
+    Los sonidos se generan en el momento: no se descarga ni se envía nada.<br>
+    <span style="opacity:.6">Versión 4 · cada sonido se repite hasta que lo vuelvas a tocar</span>
   </footer>
 </div>
 
@@ -183,7 +186,7 @@ const store = {
   set(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
 };
 
-let ctx = null, master = null, dryBus = null, reverbIn = null, limiter = null, analyser = null, meterData = null;
+let ctx = null, master = null, dryBus = null, reverbIn = null, revOut = null, limiter = null, analyser = null, meterData = null;
 let cache = {};
 
 // Arma la cadena de audio sobre un contexto (también se usa para pruebas sin altavoz).
@@ -192,8 +195,6 @@ function initGraph(c){
   master = ctx.createGain();   master.gain.value = 0;
   dryBus = ctx.createGain();
   reverbIn = ctx.createGain();
-  const rev = ctx.createConvolver(); rev.buffer = makeReverb(3.8);
-  const wet = ctx.createGain(); wet.gain.value = 0.9;
   // Limitador: deja subir el volumen sin que el altavoz distorsione en los picos.
   limiter = ctx.createDynamicsCompressor();
   limiter.threshold.value = -8; limiter.knee.value = 4; limiter.ratio.value = 16;
@@ -202,7 +203,7 @@ function initGraph(c){
   meterData = new Float32Array(analyser.fftSize);
 
   dryBus.connect(master);
-  reverbIn.connect(rev); rev.connect(wet); wet.connect(master);
+  buildReverb();
   master.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
 }
 
@@ -246,6 +247,25 @@ function audio(){
   applyVolume(0.3);
   requestAnimationFrame(meterLoop);
   return ctx;
+}
+
+// El eco (reverb) es compartido. Al callar el último sonido lo cambiamos por uno
+// nuevo, así no queda "colgado" el eco del grito unos segundos después de pararlo.
+function buildReverb(){
+  const rev = ctx.createConvolver();
+  rev.buffer = cache.revBuf || (cache.revBuf = makeReverb(3.8));
+  revOut = gain(0.9);
+  wire(reverbIn, rev, revOut, master);
+}
+function cutReverb(){
+  if (!ctx || Object.keys(state.playing).length) return;    // si algo sigue sonando, no se toca
+  const t = ctx.currentTime, old = revOut;
+  old.gain.cancelScheduledValues(t);
+  old.gain.setValueAtTime(old.gain.value, t);
+  old.gain.linearRampToValueAtTime(0, t + 0.1);
+  setTimeout(() => { try{ old.disconnect(); }catch(e){} }, 200);
+  reverbIn.disconnect();
+  buildReverb();
 }
 
 // Reverb de "sótano": ruido que se apaga lento y oscuro (sin agudos).
@@ -892,8 +912,9 @@ function toggle(id){
   audio(); checkAudioReady();
   const isShot = !!SHOTS[id];
   if (state.playing[id]){
-    killGroup(state.playing[id].G, isShot ? 0.15 : 0.4);
+    killGroup(state.playing[id].G, isShot ? 0.12 : 0.2);
     delete state.playing[id];
+    setTimeout(cutReverb, 250);
     render();
     return;
   }
@@ -912,6 +933,7 @@ function stopAll(){
   Object.values(state.playing).forEach(e => killGroup(e.G, 0.15));
   state.playing = {};
   cancelTrap();
+  setTimeout(cutReverb, 250);
   try{ if (silentEl) silentEl.pause(); }catch(e){}
   render();
 }
@@ -985,7 +1007,7 @@ function tile(id, item, cls, onClick){
   const b = document.createElement("button");
   b.className = "tile " + cls; b.type = "button"; b.dataset.id = id;
   b.setAttribute("aria-pressed", "false");
-  b.innerHTML = '<span class="ico">' + item.ico + "</span><span>" + item.name + "</span>";
+  b.innerHTML = '<span class="ico">' + item.ico + "</span><span>" + item.name + '</span><span class="hint">■ toca para parar</span>';
   b.addEventListener("click", () => onClick(id));
   return b;
 }
