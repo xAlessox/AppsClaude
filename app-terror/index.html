@@ -139,7 +139,7 @@
       <summary>¿No se oye nada?</summary>
       <ul>
         <li>Si la barra de arriba se mueve, la app sí está sonando: sube el volumen del teléfono con los botones laterales <em>mientras suena</em>.</li>
-        <li><b>iPhone:</b> revisa el interruptor de silencio (el switch del costado). Con el silencio activo, Safari no reproduce audio.</li>
+        <li><b>iPhone:</b> la app intenta sonar aunque el celular esté en silencio (🔕). Si aun así no suena, quita el modo silencio con el switch del costado o desde el Centro de control.</li>
         <li><b>Android:</b> el volumen de "multimedia" es distinto al del timbre. Ajústalo mientras suena.</li>
         <li>Si tienes audífonos o una bocina Bluetooth conectada, el sonido se va para allá.</li>
         <li>Si la barra no se mueve, toca otra vez el botón del sonido.</li>
@@ -206,7 +206,35 @@ function initGraph(c){
   master.connect(limiter); limiter.connect(analyser); analyser.connect(ctx.destination);
 }
 
+// iPhone en modo silencio: Safari apaga la Web Audio API. Pedimos sesión de
+// "reproducción" (como YouTube o Música) y tocamos un audio mudo en bucle: con
+// eso iOS deja sonar la app aunque el switch de silencio esté activo.
+let silentEl = null;
+function silentWav(){
+  const n = 4000, b = new Uint8Array(44 + n), v = new DataView(b.buffer);
+  const w = (o, t) => { for (let i = 0; i < t.length; i++) b[o + i] = t.charCodeAt(i); };
+  w(0, "RIFF"); v.setUint32(4, 36 + n, true); w(8, "WAVE"); w(12, "fmt ");
+  v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+  w(36, "data"); v.setUint32(40, n, true); b.fill(128, 44);
+  let bin = ""; for (let i = 0; i < b.length; i++) bin += String.fromCharCode(b[i]);
+  return "data:audio/wav;base64," + btoa(bin);
+}
+function unmuteIOS(){
+  try{ if (navigator.audioSession) navigator.audioSession.type = "playback"; }catch(e){}
+  try{
+    if (!silentEl){
+      silentEl = document.createElement("audio");
+      silentEl.setAttribute("x-webkit-airplay", "deny");
+      silentEl.setAttribute("playsinline", "");
+      silentEl.preload = "auto"; silentEl.loop = true; silentEl.src = silentWav();
+    }
+    const p = silentEl.play(); if (p && p.catch) p.catch(() => {});
+  }catch(e){}
+}
+
 function audio(){
+  unmuteIOS();
   if (ctx) return ctx;
   initGraph(new (window.AudioContext || window.webkitAudioContext)());
   // iOS/Safari: un sonido mudo dentro del primer toque "despierta" el audio.
@@ -888,6 +916,7 @@ function stopAll(){
   if (state.amb) killGroup(state.amb.G, 0.2);
   state.amb = null; state.ambient = null;
   cancelTrap();
+  try{ if (silentEl) silentEl.pause(); }catch(e){}
   render();
 }
 
